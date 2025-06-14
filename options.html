@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ColdMail AI Assistant Options</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      line-height: 1.6;
+    }
+    h1 {
+      color: #1a73e8;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 10px;
+    }
+    .form-section {
+      margin-bottom: 30px;
+      background-color: #f9f9f9;
+      padding: 20px;
+      border-radius: 8px;
+    }
+    h2 {
+      margin-top: 0;
+      color: #333;
+    }
+    .form-group {
+      margin-bottom: 15px;
+    }
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: 500;
+    }
+    input[type="text"], input[type="password"], textarea {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+    button {
+      background-color: #1a73e8;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: 500;
+    }
+    button:hover {
+      background-color: #1557b0;
+    }
+    .status {
+      margin-top: 10px;
+      padding: 10px;
+      border-radius: 4px;
+      display: none;
+    }
+    .success {
+      background-color: #d4edda;
+      color: #155724;
+    }
+    .error {
+      background-color: #f8d7da;
+      color: #721c24;
+    }
+    .templates-container {
+      margin-top: 20px;
+    }
+    .template {
+      background-color: white;
+      padding: 15px;
+      border-radius: 4px;
+      margin-bottom: 15px;
+      border: 1px solid #ddd;
+    }
+    .template-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .template-actions {
+      display: flex;
+      gap: 10px;
+    }
+    .template-actions button {
+      padding: 5px 10px;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <h1>ColdMail AI Assistant Options</h1>
+
+  <div class="form-section">
+    <h2>API Configuration</h2>
+    <div class="form-group">
+      <label for="api-key">API Key:</label>
+      <input type="password" id="api-key" placeholder="Enter your API key">
+    </div>
+    <div class="form-group">
+      <label for="api-url">API URL:</label>
+      <input type="text" id="api-url" placeholder="https://api.your-backend.com/generate" value="https://api.your-backend.com/generate">
+    </div>
+  </div>
+
+  <div class="form-section">
+    <h2>User Information</h2>
+    <div class="form-group">
+      <label for="name">Your Name:</label>
+      <input type="text" id="name" placeholder="John Doe">
+    </div>
+    <div class="form-group">
+      <label for="company">Your Company:</label>
+      <input type="text" id="company" placeholder="Acme Corp">
+    </div>
+    <div class="form-group">
+      <label for="role">Your Role:</label>
+      <input type="text" id="role" placeholder="Sales Manager">
+    </div>
+  </div>
+
+  <div class="form-section">
+    <h2>Email Templates</h2>
+    <p>Create and manage your custom email templates for different purposes.</p>
+    
+    <div class="templates-container" id="templates-list">
+      <!-- Template examples will be inserted here by JavaScript -->
+    </div>
+    
+    <div class="form-group">
+      <button id="add-template">Add New Template</button>
+    </div>
+  </div>
+
+  <div class="form-section">
+    <h2>Advanced Settings</h2>
+    <div class="form-group">
+      <label for="tone">Default Email Tone:</label>
+      <select id="tone" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+        <option value="professional">Professional</option>
+        <option value="friendly">Friendly</option>
+        <option value="persuasive">Persuasive</option>
+        <option value="direct">Direct</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>
+        <input type="checkbox" id="auto-suggest"> 
+        Enable auto-suggestions based on recipient profile
+      </label>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <button id="save-options">Save Settings</button>
+    <div id="status" class="status"></div>
+  </div>
+
+  <script src="options.js"></script>
+</body>
+</html>

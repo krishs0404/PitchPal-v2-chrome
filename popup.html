@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ColdMail AI Assistant</title>
+  <style>
+    body {
+      width: 350px;
+      min-height: 300px;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f9f9f9;
+    }
+    header {
+      padding: 15px;
+      background-color: #1a73e8;
+      color: white;
+      text-align: center;
+    }
+    .container {
+      padding: 15px;
+    }
+    .form-group {
+      margin-bottom: 15px;
+    }
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: 500;
+    }
+    textarea, input {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+    textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+    button {
+      background-color: #1a73e8;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: 500;
+      width: 100%;
+    }
+    button:hover {
+      background-color: #1557b0;
+    }
+    .result {
+      margin-top: 15px;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      background-color: white;
+      max-height: 200px;
+      overflow-y: auto;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>ColdMail AI Assistant</h1>
+  </header>
+  <div class="container">
+    <div class="form-group">
+      <label for="recipient">Recipient Information:</label>
+      <textarea id="recipient" placeholder="Enter recipient name, job title, company, etc."></textarea>
+    </div>
+    <div class="form-group">
+      <label for="purpose">Email Purpose:</label>
+      <input type="text" id="purpose" placeholder="Sales, partnership, job application, etc.">
+    </div>
+    <div class="form-group">
+      <button id="generate">Generate Personalized Email</button>
+    </div>
+    <div id="result" class="result">
+      <p>Your generated email will appear here...</p>
+    </div>
+  </div>
+  <script src="popup.js"></script>
+</body>
+</html>
