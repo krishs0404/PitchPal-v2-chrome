@@ -5,6 +5,7 @@ import './style.css';
 interface OptionsState {
   apiBaseUrl: string;
   oauthClientId: string;
+  openaiApiKey: string;
   defaultTemplates: string;
   isSaving: boolean;
   saveMessage: string | null;
@@ -15,6 +16,7 @@ const OptionsPage: React.FC = () => {
   const [options, setOptions] = useState<OptionsState>({
     apiBaseUrl: '',
     oauthClientId: '',
+    openaiApiKey: '',
     defaultTemplates: '',
     isSaving: false,
     saveMessage: null,
@@ -26,12 +28,14 @@ const OptionsPage: React.FC = () => {
     chrome.storage.sync.get([
       'apiBaseUrl',
       'oauthClientId',
+      'openaiApiKey',
       'defaultTemplates'
     ], (result) => {
       setOptions(prevState => ({
         ...prevState,
         apiBaseUrl: result.apiBaseUrl || '',
         oauthClientId: result.oauthClientId || '',
+        openaiApiKey: result.openaiApiKey || '',
         defaultTemplates: result.defaultTemplates || 
           '# Default Email Templates\n\n' +
           '## Professional\n' +
@@ -66,6 +70,7 @@ const OptionsPage: React.FC = () => {
       await chrome.storage.sync.set({
         apiBaseUrl: options.apiBaseUrl,
         oauthClientId: options.oauthClientId,
+        openaiApiKey: options.openaiApiKey,
         defaultTemplates: options.defaultTemplates
       });
 
@@ -100,6 +105,7 @@ const OptionsPage: React.FC = () => {
         ...prevState,
         apiBaseUrl: 'https://api.your-backend.com',
         oauthClientId: '',
+        openaiApiKey: '',
         defaultTemplates: '# Default Email Templates\n\n' +
           '## Professional\n' +
           'Dear {recipient},\n\n' +
@@ -133,6 +139,20 @@ const OptionsPage: React.FC = () => {
                 required
               />
               <small>The base URL for the email generation API</small>
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="openaiApiKey">OpenAI API Key:</label>
+              <input
+                type="password"
+                id="openaiApiKey"
+                name="openaiApiKey"
+                value={options.openaiApiKey}
+                onChange={handleInputChange}
+                placeholder="sk-..."
+                required
+              />
+              <small>Your OpenAI API key for email generation (stored securely)</small>
             </div>
 
             <div className="form-group">

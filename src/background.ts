@@ -13,6 +13,7 @@ interface EmailResult {
 interface StorageConfig {
   apiUrl?: string;
   oauthClientId?: string;
+  openaiApiKey?: string;
 }
 
 // Initialize extension when installed
@@ -21,8 +22,9 @@ chrome.runtime.onInstalled.addListener(async () => {
   
   // Set default settings
   await chrome.storage.sync.set({
-    apiUrl: 'https://api.your-backend.com/generate',
-    emailTone: 'professional'
+    apiUrl: 'https://api.openai.com/v1/chat/completions',
+    emailTone: 'professional',
+    openaiApiKey: '' // This needs to be configured by the user
   });
 });
 
@@ -61,12 +63,12 @@ async function handleGenerateEmail(
     // Get API configuration from storage
     const config = await getStorageConfig();
     
-    if (!config.apiUrl) {
-      throw new Error('API URL not configured. Please visit the options page.');
+    if (!config.openaiApiKey) {
+      throw new Error('OpenAI API key not configured. Please visit the options page.');
     }
 
-    // Make API request
-    const emailResult = await generateEmailFromAPI(config.apiUrl, message.prompt);
+    // Make API request to OpenAI
+    const emailResult = await generateEmailFromAPI(config.openaiApiKey, message.prompt);
     
     // Send the result back to the content script
     await chrome.tabs.sendMessage(tabId, { 
@@ -92,10 +94,11 @@ async function handleGenerateEmail(
  */
 async function getStorageConfig(): Promise<StorageConfig> {
   return new Promise((resolve) => {
-    chrome.storage.sync.get(['apiUrl', 'oauthClientId'], (result) => {
+    chrome.storage.sync.get(['apiUrl', 'oauthClientId', 'openaiApiKey'], (result) => {
       resolve({
         apiUrl: result.apiUrl as string,
-        oauthClientId: result.oauthClientId as string
+        oauthClientId: result.oauthClientId as string,
+        openaiApiKey: result.openaiApiKey as string
       });
     });
   });
@@ -104,30 +107,50 @@ async function getStorageConfig(): Promise<StorageConfig> {
 /**
  * Make API request to generate email
  */
-async function generateEmailFromAPI(apiUrl: string, prompt: string): Promise<EmailResult> {
+async function generateEmailFromAPI(apiKey: string, prompt: string): Promise<EmailResult> {
   try {
-    console.log(`Making API request to ${apiUrl}`);
+    console.log('Making OpenAI API request');
     
-    const response = await fetch(apiUrl, {
+    // Call OpenAI API directly
+    const openaiApiUrl = 'https://api.openai.com/v1/chat/completions';
+    
+    const response = await fetch(openaiApiUrl, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${apiKey}`
       },
-      body: JSON.stringify({ prompt })
+      body: JSON.stringify({
+        model: 'gpt-3.5-turbo',
+        messages: [
+          {
+            role: 'system',
+            content: 'You are an expert cold email writer. Generate a concise, professional email based on the provided prompt.'
+          },
+          {
+            role: 'user',
+            content: prompt
+          }
+        ],
+        temperature: 0.7,
+        max_tokens: 800
+      })
     });
 
     if (!response.ok) {
       const errorData = await response.text();
-      throw new Error(`API request failed (${response.status}): ${errorData}`);
+      throw new Error(`OpenAI API request failed (${response.status}): ${errorData}`);
     }
 
     const data = await response.json();
     
-    if (!data.emailText) {
-      throw new Error('Invalid API response: missing emailText field');
+    if (!data.choices || !data.choices[0] || !data.choices[0].message || !data.choices[0].message.content) {
+      throw new Error('Invalid OpenAI API response: missing content');
     }
 
-    return data as EmailResult;
+    return {
+      emailText: data.choices[0].message.content.trim()
+    };
   } catch (error) {
     console.error('API request failed:', error);
     throw new Error(error instanceof Error ? 
