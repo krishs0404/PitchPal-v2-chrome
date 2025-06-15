@@ -1,7 +1,40 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { crx } from '@crxjs/vite-plugin';
-import manifest from './manifest.json' assert { type: 'json' };
+
+// JavaScript object matching the manifest structure
+const manifest = {
+  manifest_version: 3,
+  name: "ColdMail AI Assistant",
+  version: "0.1.0",
+  description: "Generate personalized cold emails using AI to improve outreach success",
+  icons: {
+    "16": "icons/16.png",
+    "128": "icons/128.png"
+  },
+  action: {
+    default_popup: "src/popup/popup.html"
+  },
+  options_page: "src/options/options.html",
+  background: {
+    service_worker: "background.js",
+    type: "module"
+  },
+  content_scripts: [
+    {
+      matches: ["https://mail.google.com/*"],
+      js: ["content-script.js"]
+    }
+  ],
+  permissions: [
+    "storage",
+    "identity",
+    "activeTab"
+  ],
+  host_permissions: [
+    "https://api.your-backend.com/*"
+  ]
+};
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -17,7 +50,7 @@ export default defineConfig({
         popup: 'src/popup/popup.html',
         options: 'src/options/options.html',
         background: 'src/background.ts',
-        content: 'src/content-script.ts'
+        'content-script': 'src/content-script.ts'
       }
     }
   }
