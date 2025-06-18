@@ -243,7 +243,7 @@ Phone Number
   return (
     <div className="email-form-container">
       <header>
-        <h1>ColdMail AI Assistant</h1>
+        <h1>PitchPal</h1>
       </header>
       
       <form onSubmit={handleSubmit} className="email-form">

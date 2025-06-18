@@ -120,7 +120,7 @@ const OptionsPage: React.FC = () => {
   return (
     <div className="options-container">
       <header>
-        <h1>ColdMail AI Assistant Settings</h1>
+        <h1>PitchPal Settings</h1>
       </header>
 
       <main>

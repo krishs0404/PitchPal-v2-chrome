@@ -5,9 +5,9 @@ import { crx } from '@crxjs/vite-plugin';
 // JavaScript object matching the manifest structure
 const manifest = {
   manifest_version: 3,
-  name: "ColdMail AI Assistant",
+  name: "PitchPal",
   version: "0.1.0",
-  description: "Generate personalized cold emails using AI to improve outreach success",
+  description: "Generate compelling cold outreach emails using AI to boost your pitch success rate",
   icons: {
     "16": "icons/16.png",
     "128": "icons/128.png"
